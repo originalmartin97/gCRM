@@ -3,45 +3,78 @@ import smtplib
 import os
 import time
 
+UserName = "originalmartin97@gmail.com"
+UserPassword = "zklybkojdcacniof"
+IOFilePath = "./potential_customers_insurance.csv"
 
-def send_email(email, name, template_content):
-    """Sends an email to the specified address with the specified name and template content."""
+
+# This code only uses csv and txt formatted files as source.
+
+
+# Sends an email to the specified address with the specified name and content as message.
+
+
+def send_email(addressTo, content):
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login("originalmartin97@gmail.com", "zklybkojdcacniof")
+    server.login(UserName, UserPassword)
 
     message = "Subject: MetLife Zrt. (Győr)\n\n"
-    message += template_content
+    message += content
     message = message.encode("utf-8")
 
-    server.sendmail("originalmartin97@gmail.com", email, message)
+    server.sendmail(UserName, addressTo, message)
     server.quit()
+    time.sleep(1)
 
 
 if __name__ == "__main__":
-    with open("./potential_customers_insurance.csv", "r+") as csvfile:
+    # Reads in the template content from file
+    with open("insurance_template.txt", "r") as template:
+        content = template.read()
+
+    # Opens the source file for reading and writing
+    with open(IOFilePath, "r+") as IOFile:
+        # Initiates variable for containing the rows of the source file
         lines = []
-        reader = csv.reader(csvfile, delimiter=",")
+
+        reader = csv.reader(IOFile, delimiter=",")
+
+        # Iterates through rows of source file and initiates sending out emails
+
         for row in reader:
+            # Initiates temporary container for current row
             temp = row
+
+            # Checks if the email isn't already sent out to customer
             if row[2] != "Sent":
                 email = row[1]
                 name = row[0]
-                template_content = "Kedves {},\n\na nevem Takács Martin, én egyike vagyok a MetLife (Győr) kapcsolatfelvételért és az Élet-, Baleset- és Egészségbiztosítások szolgáltatásáért felelős munkatársainak.\n\nÉszleltük, hogy korábban az egyik hirdetésünk által megadta az elérhetőségét, és érdeklődött a személyi biztosításokat tartalmazó szolgáltatásaink iránt. Ezért úgy gondoltuk, hogy felvesszük Önnel a kapcsolatot.\n\nAmennyiben aktuálisan érdekli valamely szolgáltatásunk, kérem, töltse ki az alábbi kérdőívet. A kérdőív kitöltése nem kötelező, de előzetesen segít nekünk abban, hogy jobban megismerjük az igényeit, és megfelelő ajánlatot tudjunk adni, majd felkeresni Önt a későbbiekben, lehetőségeink szerint személyesen vagy telefonon keresztül.\n\nValamint lehetősége van minket megkeresni SMS-ben és telefonon az alábbi számon:\nTakács Martin: +36300822050\n\nA kérdőív kitöltését az alábbi linkre kattintva tudja elérni: https://docs.google.com/forms/d/e/1FAIpQLSeVgd5Wkci3cEhzBUYNP9d7_GJXjp_d3kWJc0wObPUXGBwlfg/viewform?usp=sf_link\n\nHa bármilyen kérdése van vagy más szolgáltatásaink után szeretne érdeklődni, kérjük, ne habozzon kapcsolatba lépni velünk a megadott telefonszámon vagy az originalmartin97@gmail.com címen keresztül.\n\n(MetLife - Győr; Élet-, Baleset- és Egészségbiztosítás)\n\nÜdvözlettel,\nTakács Martin".format(
-                    name
-                )
-                send_email(email, name, template_content)
-                time.sleep(1)
+
+                # Sets the current customers name in the text
+                content = content.format(name)
+
+                send_email(email, content)
+
+                # Flags current customer
                 temp[2] = "Sent"
 
+            # Appends current row in to lines container
             lines.append(temp)
-        csvfile.close()
-        os.remove("./potential_customers_insurance.csv")
 
-        with open("./potential_customers_insurance.csv", "w", newline="") as newCsvFile:
-            writer = csv.writer(newCsvFile, delimiter=",")
+        IOFile.close()
 
-            # Write the rows to the CSV file using writerows().
+        # Deletes source file beforehand
+        os.remove(IOFilePath)
 
-            writer.writerows(lines)
-            newCsvFile.close()
+    template.close()
+
+    # Creates source file from lines container with updated data
+
+    with open("./potential_customers_insurance.csv", "w", newline="") as newCsvFile:
+        writer = csv.writer(newCsvFile, delimiter=",")
+
+        # Write the rows to the source file using writerows().
+
+        writer.writerows(lines)
+        newCsvFile.close()
