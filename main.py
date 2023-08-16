@@ -29,52 +29,56 @@ def send_email(addressTo, content):
 
 
 if __name__ == "__main__":
-    # Reads in the template content from file
-    with open("insurance_template.txt", "r") as template:
-        content = template.read()
+    # Checks if file exist
 
-    # Opens the source file for reading and writing
-    with open(IOFilePath, "r+") as IOFile:
-        # Initiates variable for containing the rows of the source file
-        lines = []
+    if os.path.isfile(IOFilePath):
+        # Reads in the template content from file
 
-        reader = csv.reader(IOFile, delimiter=",")
+        with open("insurance_template.txt", "r") as template:
+            content = template.read()
 
-        # Iterates through rows of source file and initiates sending out emails
+        # Opens the source file for reading and writing
+        with open(IOFilePath, "r+") as IOFile:
+            # Initiates variable for containing the rows of the source file
+            lines = []
 
-        for row in reader:
-            # Initiates temporary container for current row
-            temp = row
+            reader = csv.reader(IOFile, delimiter=",")
 
-            # Checks if the email isn't already sent out to customer
-            if row[2] != "Sent":
-                email = row[1]
-                name = row[0]
+            # Iterates through rows of source file and initiates sending out emails
 
-                # Sets the current customers name in the text
-                content = content.format(name)
+            for row in reader:
+                # Initiates temporary container for current row
+                temp = row
 
-                send_email(email, content)
+                # Checks if the email isn't already sent out to customer
+                if row[2] != "Sent":
+                    email = row[1]
+                    name = row[0]
 
-                # Flags current customer
-                temp[2] = "Sent"
+                    # Sets the current customers name in the text
+                    content = content.format(name)
 
-            # Appends current row in to lines container
-            lines.append(temp)
+                    send_email(email, content)
 
-        IOFile.close()
+                    # Flags current customer
+                    temp[2] = "Sent"
 
-        # Deletes source file beforehand
-        os.remove(IOFilePath)
+                # Appends current row in to lines container
+                lines.append(temp)
 
-    template.close()
+            IOFile.close()
 
-    # Creates source file from lines container with updated data
+            # Deletes source file beforehand
+            os.remove(IOFilePath)
 
-    with open("./potential_customers_insurance.csv", "w", newline="") as newCsvFile:
-        writer = csv.writer(newCsvFile, delimiter=",")
+        template.close()
 
-        # Write the rows to the source file using writerows().
+        # Creates source file from lines container with updated data
 
-        writer.writerows(lines)
-        newCsvFile.close()
+        with open("./potential_customers_insurance.csv", "w", newline="") as newCsvFile:
+            writer = csv.writer(newCsvFile, delimiter=",")
+
+            # Write the rows to the source file using writerows().
+
+            writer.writerows(lines)
+            newCsvFile.close()
