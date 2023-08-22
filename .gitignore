@@ -1,2 +1,4 @@
-*.vscode
+.vscode
 potential_customers_insurance.csv
+credit_template.txt
+potential_customers_credit.csv
