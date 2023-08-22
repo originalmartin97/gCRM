@@ -2,10 +2,13 @@ import csv
 import smtplib
 import os
 import time
+import schedule
 
 UserName = "originalmartin97@gmail.com"
 UserPassword = "zklybkojdcacniof"
-IOFilePath = "./potential_customers_insurance.csv"
+IOFilePath = (
+    "/home/martin/projects/mailing_list_insurance/potential_customers_insurance.csv"
+)
 
 
 # This code only uses csv and txt formatted files as source.
@@ -28,13 +31,15 @@ def send_email(addressTo, content):
     time.sleep(1)
 
 
-if __name__ == "__main__":
+def process():
     # Checks if file exist
 
     if os.path.isfile(IOFilePath):
         # Reads in the template content from file
 
-        with open("insurance_template.txt", "r") as template:
+        with open(
+            "/home/martin/projects/mailing_list_insurance/insurance_template.txt", "r"
+        ) as template:
             content = template.read()
 
         # Opens the source file for reading and writing
@@ -75,10 +80,13 @@ if __name__ == "__main__":
 
         # Creates source file from lines container with updated data
 
-        with open("./potential_customers_insurance.csv", "w", newline="") as newCsvFile:
+        with open(IOFilePath, "w", newline="") as newCsvFile:
             writer = csv.writer(newCsvFile, delimiter=",")
 
             # Write the rows to the source file using writerows().
 
             writer.writerows(lines)
             newCsvFile.close()
+
+
+process()
