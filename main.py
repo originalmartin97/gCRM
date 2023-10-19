@@ -3,8 +3,8 @@ import smtplib
 import os
 import time
 
-user_name = "originalmartin97@gmail.com"
-user_password = "zklybkojdcacniof"
+user_name = "metlife.martin@gmail.com"
+user_password = "qboxnhnoquehleyw"
 io_file_path_insurance = (
     "/home/martin/projects/mailing_list_insurance/potential_customers_insurance.csv"
 )
@@ -76,14 +76,14 @@ def process(category):
             reader = csv.reader(source_file, delimiter=",")
 
             for row in reader:
-                if row[2] != "Sent":
-                    address = row[1]
+                if "Értesítve: email" not in row[6] and "NEM" not in row[6]:
+                    address = row[5]
                     name = row[0]
                     content = template_content.format(name)
 
                     send_email(address, content)
 
-                    row[2] = "Sent"
+                    row[6] = "Értesítve: email"
 
                 lines.append(row)
 
@@ -108,12 +108,14 @@ if __name__ == "__main__":
 
     while True:
         user_input = input(
-            "\n\n\nWhat do you want to do?\n\n0 - Exit program\n1 - Send out emails about insurance to potential customers\n2 - Send out emails about credit to potential customers\n"
+            "\n\n\nWhat do you want to do?\n\n0 - Exit program\n1 - Send out emails about insurance to potential customers\n2 - Send out emails about credit to potential customers\n3 - Send out emails about pension to potential customers\n"
         )
 
         if user_input == "1":
             process(user_input)
         elif user_input == "2":
+            process(user_input)
+        elif user_input == "3":
             process(user_input)
         elif user_input == "0":
             print("\n\nGoodbye! :)")
