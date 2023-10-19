@@ -2,9 +2,16 @@ import csv
 import smtplib
 import os
 import time
+import json
 
-user_name = "metlife.martin@gmail.com"
-user_password = "qboxnhnoquehleyw"
+with open("gmail_credentials.json") as data_file:
+    data = json.load(data_file)
+
+
+user_name = data["username"]
+user_password = data["password"]
+
+
 io_file_path_insurance = (
     "/home/martin/projects/mailing_list_insurance/potential_customers_insurance.csv"
 )
