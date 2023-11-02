@@ -1,8 +1,8 @@
 .vscode
 potential_customers_insurance.csv
-credit_template.txt
+templates/
 potential_customers_credit.csv
 potential_customers_pension.csv
-metlifeautomatizationsystem-5dcf21488d37.json
 gmail_credentials.json
 *credentials*.json
+gserviceaccount.json
