@@ -1,8 +1,7 @@
-.vscode
-potential_customers_insurance.csv
+.vscode/
 templates/
-potential_customers_credit.csv
-potential_customers_pension.csv
 gmail_credentials.json
 *credentials*.json
 gserviceaccount.json
+__pycache__/
+```
