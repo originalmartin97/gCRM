@@ -7,19 +7,19 @@ import functions as f
 # Use the given google sheet as a database.
 from gservice_manager import gc
 
-sheet = f.open_google_sheet(spreadsheet="Jelentkezők_Munkatábla1", worksheet="Teszt")
+sheet = f.open_google_sheet(spreadsheet="Jelentkezők_Munkatábla1", worksheet="Jelzálog")
 
 # Check the sheet for new potential customers.
 # If the 6th column is empty, send them an email via send_email() function.
 for i, row in enumerate(sheet.get_all_values(), start=1):
     try:
-        if not row[6]:  # 7th column, index is 6 because Python uses 0-based indexing
+        if not row[3]:
             f.send_email(
-                row[4],
-                f.create_email_content("templates/insurance_template.txt", row[0]),
+                row[2],
+                f.create_email_content("templates/credit_template.txt", row[0]),
             )
             # Mark the customer as contacted.
-            sheet.update_cell(i, 7, "igen")
+            sheet.update_cell(i, 4, "igen")
             print("Ügyfél:", row[0], "sikeresen értesítve.")
         # If there is not one, do nothing.
     except Exception as e:
