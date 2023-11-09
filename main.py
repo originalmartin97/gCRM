@@ -1,9 +1,5 @@
 import csv
 from functions import process
-from google_sheet_api import gc
-
-worksheet = gc.open("Your Google Sheet").sheet1
-worksheet.update("A1", "New Data")
 
 
 # This code only uses csv and txt formatted files as source.
