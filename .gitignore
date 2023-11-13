@@ -4,4 +4,6 @@ gmail_credentials.json
 *credentials*.json
 gserviceaccount.json
 __pycache__/
-```
+doc_list.py
+*.pyc
+

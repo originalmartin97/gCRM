@@ -1,14 +1,13 @@
 # 'Tis but a script for the purpose of updating the database with new potential customers using google Sheets and a predefined Google Service Account.
 
 # The magic starts here.
-from gservice_manager import gc
 import functions as f
 import doc_list as dl
 
 
 # Open source sheet.
 source_sheet = f.open_google_sheet(
-    spreadsheet=dl.sheets_customer_src, worksheet=dl.worksheets_credit_name
+    spreadsheet=dl.sheets_customer_src, worksheet=dl.worksheets_insurance_name
 )
 # Copy the rows to a temporary list.
 temp_list = source_sheet.get_all_values()
@@ -16,7 +15,7 @@ temp_list = source_sheet.get_all_values()
 source_sheet = None
 # Open target sheet.
 target_sheet = f.open_google_sheet(
-    spreadsheet=dl.sheets_customer_trgt, worksheet=dl.worksheets_credit_name
+    spreadsheet=dl.sheets_customer_trgt, worksheet=dl.worksheets_insurance_name
 )
 # Iterate through the temporary list (check the name column).
 for i, row in enumerate(temp_list, start=1):
