@@ -2,20 +2,26 @@
 
 # The magic starts here.
 import functions as f
-import doc_list as dl
+
+# Authenticate the service account.
+f.authenticate_gservice_account()
+
+# Get the accessible spreadsheets keys from the json file.
+data = f.json_data_loader("spreadsheet_keys.json")
 
 
 # Open source sheet.
-source_sheet = f.open_google_sheet(
-    spreadsheet=dl.sheets_customer_src, worksheet=dl.worksheets_insurance_name
+source_sheet = f.open_by_key_google_sheet(
+    spreadsheet=data["sheets_customer_src"], worksheet=data["worksheets_credit_name"]
 )
 # Copy the rows to a temporary list.
 temp_list = source_sheet.get_all_values()
 # Close the source sheet.
 source_sheet = None
 # Open target sheet.
-target_sheet = f.open_google_sheet(
-    spreadsheet=dl.sheets_customer_trgt, worksheet=dl.worksheets_insurance_name
+target_sheet = f.open_by_key_google_sheet(
+    spreadsheet=data["sheets_customer_trgt"],
+    worksheet=data["worksheets_credit_name"],
 )
 # Iterate through the temporary list (check the name column).
 for i, row in enumerate(temp_list, start=1):
@@ -24,3 +30,5 @@ for i, row in enumerate(temp_list, start=1):
     if not row[0] in target_sheet.col_values(1):
         target_sheet.append_row(row)
         print("Új ügyfél felvéve:", row[0])
+    # Wait a little bit to avoid exceeding the quota.
+    f.time.sleep(1)

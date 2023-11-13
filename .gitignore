@@ -6,4 +6,4 @@ gserviceaccount.json
 __pycache__/
 doc_list.py
 *.pyc
-
+open_by_key.json

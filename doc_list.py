@@ -1,5 +1,5 @@
 sheets_customer_src = "Kaszás Gáborné"
 sheets_customer_trgt = "Jelentkezők_Munkatábla1"
-worksheets_insurance_name = "Jelzálog"
+worksheets_credit_name = "Jelzálog"
 worksheets_insurance_name = "Biztosítás"
 workseets_pension_name = "Nyugdíj"

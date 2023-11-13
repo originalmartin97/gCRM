@@ -1,10 +1,26 @@
-from gmail_manager import user_name, user_password
 import smtplib
 import time
 from gservice_manager import gc
+import json
 
 
-def send_email(to_address, content):
+def json_data_loader(file_name):
+    with open(file_name) as data_file:
+        data = json.load(data_file)
+    return data
+
+
+def authenticate_gservice_account():
+    try:
+        print("Authenticating Google Service Account")
+        with open("gservice_manager.py") as f:
+            exec(f.read())
+        print("Authentication successful")
+    except Exception as e:
+        print("An error occurred:", e)
+
+
+def send_email(to_address, content, user_name, user_password):
     print("\n\nSMTP gmail server login started:")
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
@@ -29,8 +45,8 @@ def send_email(to_address, content):
     ("Done")
 
 
-def open_google_sheet(spreadsheet, worksheet):
-    sheet = gc.open(spreadsheet).worksheet(worksheet)
+def open_by_key_google_sheet(spreadsheet, worksheet):
+    sheet = gc.open_by_key(spreadsheet).worksheet(worksheet)
     return sheet
 
 

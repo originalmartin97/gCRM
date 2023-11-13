@@ -1,13 +1,21 @@
 # 'Tis but a script for the purpose of sending out emails to new potential customers using a Gmail account and a predefined Google Service Account.
 
 # The magic starts here.
-from gmail_manager import user_name, user_password
 import functions as f
 
-# Use the given google sheet as a database.
-from gservice_manager import gc
+# Authenticate the service account.
+f.authenticate_gservice_account()
 
-sheet = f.open_google_sheet(spreadsheet="Jelentkezők_Munkatábla1", worksheet="Jelzálog")
+# Load the data from the json file.
+data = f.json_data_loader("spreadsheet_keys.json")
+
+# Get gmail account credentials.
+account = f.json_data_loader("gmail_credentials.json")
+
+sheet = f.open_by_key_google_sheet(
+    spreadsheet=data["sheets_customer_trgt"],
+    worksheet=data["worksheets_insurance_name"],
+)
 
 # Check the sheet for new potential customers.
 # If the 6th column is empty, send them an email via send_email() function.
@@ -17,6 +25,8 @@ for i, row in enumerate(sheet.get_all_values(), start=1):
             f.send_email(
                 row[2],
                 f.create_email_content("templates/credit_template.txt", row[0]),
+                account["username"],
+                account["password"],
             )
             # Mark the customer as contacted.
             sheet.update_cell(i, 4, "igen")
