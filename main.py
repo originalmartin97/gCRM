@@ -23,3 +23,6 @@ if __name__ == "__main__":
         elif user_input == "0":
             print("\n\nGoodbye! :)")
             break
+
+
+"""megvagyok"""
